@@ -162,6 +162,111 @@ interface stopable {
 Kein SRP, da start und stop zusammengehören (eine hohärente Gruppe bilden)
 #+END_NOTES
 
+* interface segregation
+client should not depend on details not needed
+
+** cohesion
+#+BEGIN_SRC plantuml :file cohesion_03.png
+interface addressbook {
+    +add()
+    +remove()
+    +compress()
+    +decompress()
+}
+
+class compress_controler
+
+class mail_client
+
+compress_controler --> addressbook
+mail_client --> addressbook
+
+note left of compress_controler
+    m_addressbook.compress()
+    m_addressbook.decompress()
+end note
+
+note right of mail_client
+    m_addressbook.add(addr)
+    m_addressbook.remove(addr)
+end note
+#+END_SRC
+
+#+RESULTS:
+[[file:cohesion_03.png]]
+
+#+BEGIN_NOTES
+Kohäsion bezieht sich auf die Anzahl der Schnitstellen die von einem Klienten benutzt werden.
+Benutzt der Klient alle Schnittstellen ist die Kohäsion hoch, ansonsten niedrig.
+#+END_NOTES
+
+** cohesion
+#+BEGIN_SRC plantuml :file cohesion_04.png
+interface addressbook {
+    +add()
+    +remove()
+}
+
+interface compressable {
+    +compress()
+    +decompress()
+}
+
+class compress_controler
+
+class mail_client
+
+compress_controler --> compressable
+mail_client --> addressbook
+
+note left of compress_controler
+    m_addressbook.compress()
+    m_addressbook.decompress()
+end note
+
+note right of mail_client
+    m_addressbook.add(addr)
+    m_addressbook.remove(addr)
+end note
+#+END_SRC
+
+#+RESULTS:
+[[file:cohesion_04.png]]
+
+#+BEGIN_NOTES
+Geringere Abhängigkeiten
+Losere Kopplung
+
+C++ hält sich nicht dran. Privates sind im Header!
+#+END_NOTES
+
+** realizing srp with isp
+#+BEGIN_SRC plantuml :file srp_with_isp.png
+interface addressbook {
+    +add()
+    +remove()
+}
+
+interface compressable {
+    +compress()
+    +decompress()
+}
+
+class addressbook_impl
+
+compressable <|-- addressbook_impl
+addressbook <|-- addressbook_impl
+#+END_SRC
+
+#+RESULTS:
+[[file:srp_with_isp.png]]
+
+#+BEGIN_NOTES
+Schnittstelle ist wichtiger als Implementierung
+C++ Interfaces private implementieren
+#+END_NOTES
+
+
 * Uncle Bob
 - clean code book
 - clean code kino
