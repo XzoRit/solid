@@ -266,6 +266,96 @@ Schnittstelle ist wichtiger als Implementierung
 C++ Interfaces private implementieren
 #+END_NOTES
 
+* open close
+opened for extension
+closed for change
+
+** open close
+opened:
+the behavior of a module can be extended/changed ...
+
+closed:
+... without touching the current code of the module
+
+** open close
+#+BEGIN_SRC plantuml :file ocp_01.png
+class addressbook_compressor {
+    +compress()
+    +decompress()
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:ocp_01.png]]
+
+#+BEGIN_SRC C++
+  void addressbook_compressor::compress(format f) {
+      switch(f) {
+      case format::zip:
+          ...
+      case format::rar:
+          ...
+      }
+  }
+#+END_SRC
+
+#+BEGIN_NOTES
+Wo ist das Problem?
+AddressbookCompressor muss immer geändert werden, wenn ein neuer Kompr. Algo. Implementiert werden soll.
+#+END_NOTES
+
+** open close
+#+BEGIN_SRC plantuml :file ocp_02.png
+class addressbook_compressor {
+    +compress()
+    +decompress()
+}
+
+interface compression {
+    +{abstract} compress()
+    +{abstract} decompress()
+}
+
+class rar
+class zip
+
+compression <|-- rar
+compression <|-- zip
+addressbook_compressor --> compression
+#+END_SRC
+
+#+RESULTS:
+[[file:ocp_02.png]]
+
+#+BEGIN_SRC C++
+  void addressbook_compressor::compress(format f) {
+      m_compressor.compress();
+  }
+#+END_SRC
+
+#+BEGIN_NOTES
+Identifiziere das was sich ändert, kapsel es, zieh es aus dem Modul raus
+Die konkrete Ausprägung ist flexibel,
+Weil wir auf diese Schnittstelle programmieren
+
+Schnittstelle meint nicht unbedingt Interface
+Siehe HSM (Schniffstelle ein Enum)
+Siehe STL (Kontairerzugriff über Iteratoren, Algorithmen Schnittstellen durch Funktor)
+
+100% nicht möglich – Stellen identifizieren wo Geschlossenheit erwünscht ist
+OCP widerspricht YAGNIN
+#+END_NOTES
+
+** opc violations
+- switch/case/default
+- if/else
+- high frequency of change in module
+
+#+BEGIN_NOTES
+Switch/case u. if/else erhöhen kognitive Last.
+Je weniger davon, desto besser. -> am Besten gar keine
+default? -> ignorieren?, log?, exception? => am Besten es gibt gar keinen default
+#+END_NOTES
 
 * Uncle Bob
 - clean code book
