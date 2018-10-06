@@ -1,0 +1,108 @@
+#+STARTUP: showeverything
+#+OPTIONS: ^:{}
+
+#+OPTIONS: reveal_title_slide:nil
+#+OPTIONS: reveal_slide_number:nil
+#+OPTIONS: reveal_progress
+#+OPTIONS: num:nil 
+#+REVEAL_HLEVEL:1
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_THEME: black
+#+REVEAL_TRANS: none
+
+* solid
+
+* solid
+- SRP (single responsibility principle)
+- OPC (open close principle)
+- LSP (liskov substitution principle)
+- ISP (interface segregation principle)
+- DIP (dependency inversion principle)
+
+* what is it good for?
+- fundamental principles of softwaredesigns
+- common sense
+
+* why should you care?
+you can solve problems without knowing these principles
+
+* heuristic
+file:labyrinth.gif
+
+#+BEGIN_NOTES
+Bezeichnet die Kunst, mit begrenztem Wissen und wenig Zeit zu guten Lösungen zu kommen.
+Für die Lösung eines Problems in Software gibt es unendlich viele Möglichkeiten, aber nicht alle sind gleich gut.
+Die Prinzipien helfen uns dabei unmögliche und schlechte Lösungen auszuschließen.
+Sie sind quasi wie Wegweiser durch ein Labyrinth.
+#+END_NOTES
+
+* file:treppe_gegen_wand.jpg
+
+* file:treppe_bei_draeger.jpg
+
+* single responsibility
+one module, one responsibility
+module = package, file, class, method
+
+* file:srp_hacker.jpg
+#+BEGIN_NOTES
+Hackerreflex unterdrücken!!!
+Nachdenken!
+Bei jeder neuen Klasse als erstes einen Kommentar, der die Verantwortlichkeit beschreibt!
+Vielleicht brauche ich die Klasse auch gar nicht!
+Design zeichnen (muss nicht UML sein)
+#+END_NOTES
+
+* responsibilities
+#+BEGIN_SRC plantuml :file srp_01.png
+class addressbook {
+      +add()
+      +remove()
+      +compress()
+      +decompress()
+}
+
+note right of addressbook
+    maintains a list of addresses
+    which can be added or removed and
+    allows to compress/decompress
+    the whole collection
+end note
+
+#+END_SRC
+
+#+RESULTS:
+[[file:srp_01.png]]
+
+* responsibilities
+#+BEGIN_SRC plantuml :file srp_02.png
+class addressbook {
+      +add()
+      +remove()
+}
+
+class addressbook_compressor {
+      +compress()
+      +decompress()
+}
+
+addressbook_compressor --> addressbook
+
+note bottom of addressbook
+    maintains a list of addresses
+    which can be added or removed
+end note
+
+note bottom of addressbook_compressor
+    compress/decompress
+    the whole collection
+end note
+
+#+END_SRC
+
+#+RESULTS:
+[[file:srp_02.png]]
+
+* Uncle Bob
+- clean code book
+- clean code kino
