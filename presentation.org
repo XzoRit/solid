@@ -12,21 +12,21 @@
 
 * solid
 
-* solid
+** solid
 - SRP (single responsibility principle)
 - OPC (open close principle)
 - LSP (liskov substitution principle)
 - ISP (interface segregation principle)
 - DIP (dependency inversion principle)
 
-* what is it good for?
+** what is it good for?
 - fundamental principles of softwaredesigns
 - common sense
 
-* why should you care?
+** why should you care?
 you can solve problems without knowing these principles
 
-* heuristic
+** heuristic
 file:labyrinth.gif
 
 #+BEGIN_NOTES
@@ -36,15 +36,15 @@ Die Prinzipien helfen uns dabei unmögliche und schlechte Lösungen auszuschlie�
 Sie sind quasi wie Wegweiser durch ein Labyrinth.
 #+END_NOTES
 
-* file:treppe_gegen_wand.jpg
+** file:treppe_gegen_wand.jpg
 
-* file:treppe_bei_draeger.jpg
+** file:treppe_bei_draeger.jpg
 
 * single responsibility
 one module, one responsibility
 module = package, file, class, method
 
-* file:srp_hacker.jpg
+** file:srp_hacker.jpg
 #+BEGIN_NOTES
 Hackerreflex unterdrücken!!!
 Nachdenken!
@@ -53,7 +53,7 @@ Vielleicht brauche ich die Klasse auch gar nicht!
 Design zeichnen (muss nicht UML sein)
 #+END_NOTES
 
-* responsibilities
+** responsibilities
 #+BEGIN_SRC plantuml :file srp_01.png
 class addressbook {
       +add()
@@ -74,7 +74,7 @@ end note
 #+RESULTS:
 [[file:srp_01.png]]
 
-* responsibilities
+** responsibilities
 #+BEGIN_SRC plantuml :file srp_02.png
 class addressbook {
       +add()
@@ -103,13 +103,13 @@ end note
 #+RESULTS:
 [[file:srp_02.png]]
 
-* srp violations
+** srp violations
 -  how easy it is to find a catchy name for the module?
 - are the ands or ors in the comment?
 - module has to be changed for more than one reason?
 - low cohesion?
 
-* cohesion
+** cohesion
 #+BEGIN_SRC plantuml :file cohesion_01.png
 class address
 
@@ -144,7 +144,7 @@ Kohäsion – überprüfbar (ursprünglich hieß Prinzip Kohäsion (Tom De Marco
 100% SRP – prozedualer Code (toString, toHtml, toCsv, …)
 #+END_NOTES
 
-* coherent unit
+** coherent unit
 #+BEGIN_SRC plantuml :file cohesion_02.png
 interface startable {
     +start()
