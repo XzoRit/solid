@@ -103,6 +103,65 @@ end note
 #+RESULTS:
 [[file:srp_02.png]]
 
+* srp violations
+-  how easy it is to find a catchy name for the module?
+- are the ands or ors in the comment?
+- module has to be changed for more than one reason?
+- low cohesion?
+
+* cohesion
+#+BEGIN_SRC plantuml :file cohesion_01.png
+class address
+
+class rar_compressor
+
+class addressbook
+
+addressbook --> address
+addressbook --> rar_compressor
+
+note left of addressbook
+    m_addresses.add(addr);
+    m_addresses.remove(addr);
+end note
+
+note right of addressbook
+    m_compressor.compress();
+    m_compressor.decompress();
+end note
+
+#+END_SRC
+
+#+RESULTS:
+[[file:cohesion_01.png]]
+
+#+BEGIN_NOTES
+Werden alle Member in allen Methoden verwendet?
+
+Verantwortlichkeit – schwammiger Begriff
+Kohäsion – überprüfbar (ursprünglich hieß Prinzip Kohäsion (Tom De Marco))
+
+100% SRP – prozedualer Code (toString, toHtml, toCsv, …)
+#+END_NOTES
+
+* coherent unit
+#+BEGIN_SRC plantuml :file cohesion_02.png
+interface startable {
+    +start()
+}
+
+interface stopable {
+    +stop()
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:cohesion_02.png]]
+
+#+BEGIN_NOTES
+Kein SRP, da start und stop zusammengehören (eine hohärente Gruppe bilden)
+#+END_NOTES
+
 * Uncle Bob
 - clean code book
 - clean code kino
