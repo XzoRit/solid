@@ -1,0 +1,3 @@
+* SOLID
+Presentation about the SOLID principles
+
