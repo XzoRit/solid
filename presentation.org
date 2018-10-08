@@ -515,6 +515,94 @@ void compress_controller::compress(compressable& to_be_compressed)
 }
 #+END_SRC
 
+* so(l)id
+what is it good for?
+
+** so(l)id
+#+BEGIN_SRC plantuml :file solid_01.png
+class mail_client {
+    +compress_addressbook()
+}
+
+class addressbook {
+    +compress()
+}
+
+class data_base {
+    +read()
+}
+
+class file {
+    +write()
+}
+
+mail_client --> addressbook
+addressbook --> data_base
+addressbook --> file
+
+note bottom of mail_client
+    m_addressbook.compress()
+end note
+
+note bottom of addressbook
+    m_data_base.read()
+    this->compress()
+    m_file.write()
+end note
+#+END_SRC
+
+#+RESULTS:
+[[file:solid_01.png]]
+
+** so(l)id
+#+BEGIN_SRC plantuml :file solid_02.png
+interface compressable {
+    +{abstract} compress()
+}
+
+interface data_source {
+    +{abstract} read()
+}
+
+interface compression {
+    +{abstract} compress()
+}
+
+interface data_sink {
+    +{abstract} write()
+}
+
+class mail_client
+class compress_controller
+class addressbook_compressor
+class addressbook
+
+compressable <|-- addressbook_compressor
+data_source <|-- data_base
+data_sink <|-- file
+compression <|-- zip
+
+mail_client -> compress_controller
+mail_client -> file
+
+mail_client -> addressbook_compressor
+mail_client -> zip
+
+mail_client -> addressbook
+mail_client -> data_base
+
+compress_controller --> compressable
+compress_controller --> data_sink
+
+addressbook_compressor -> addressbook
+addressbook_compressor -> compression
+
+addressbook --> data_source
+#+END_SRC
+
+#+RESULTS:
+[[file:solid_02.png]]
+
 * Uncle Bob
 - clean code book
 - clean code kino
