@@ -357,6 +357,129 @@ Je weniger davon, desto besser. -> am Besten gar keine
 default? -> ignorieren?, log?, exception? => am Besten es gibt gar keinen default
 #+END_NOTES
 
+* dependency inversion
+high- and low-level modules should depend on abstractions
+
+** dependency inversion
+#+BEGIN_SRC plantuml :file dip_01.png
+class mail_client
+class compress_controller
+class addressbook_compressor
+class mail_compressor
+class archive_compressor
+
+mail_client --> compress_controller
+compress_controller --> addressbook_compressor
+compress_controller --> mail_compressor
+compress_controller --> archive_compressor
+#+END_SRC
+
+#+RESULTS:
+[[file:dip_01.png]]
+
+#+BEGIN_NOTES
+Wir sind es gewohnt Anforderungen runterzubrechen.
+Das ist nicht immer sinnvoll, weil es zu vielen Kopplungen zu konkreten Klassen führt.
+#+END_NOTES
+
+** abstraction
+#+BEGIN_SRC plantuml :file dip_02.png
+class mail_client
+class compress_controller
+interface compressable
+class addressbook_compressor
+class mail_compressor
+class archive_compressor
+
+mail_client --> compress_controller
+compress_controller --> compressable
+compressable <|-- addressbook_compressor
+compressable <|-- mail_compressor
+compressable <|-- archive_compressor
+#+END_SRC
+
+#+RESULTS:
+[[file:dip_02.png]]
+
+#+BEGIN_NOTES
+Durch hinzufügen einer Abstraktion hängen höher- und niedrigstufige nun von dieser ab.
+Man sieht ganz klar wo die Inversion stattfindet.
+Anstatt das wir auf alle zeigen, lassen wir die Anderen auf unsere Abstraktion zeigen.
+
+Wir durchbrechen die Abhängigkeitskette!!!
+#+END_NOTES
+
+** moving dependencies
+#+BEGIN_SRC plantuml :file dip_03.png
+namespace services {
+    interface compressable
+    compressable <|-- addressbook_compressor
+    compressable <|-- mail_compressor
+}
+
+namespace buisness_logic {
+    compress_controller --> services.compressable
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:dip_03.png]]
+
+** moving dependencies
+#+BEGIN_SRC plantuml :file dip_04.png
+namespace buisness_logic {
+    interface compressable
+    compress_controller --> compressable
+}
+
+namespace services {
+    buisness_logic.compressable <|-- addressbook_compressor
+    buisness_logic.compressable <|-- mail_compressor
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:dip_04.png]]
+
+** moving dependencies
+#+BEGIN_SRC plantuml :file dip_05.png
+namespace services {
+    interface compressable
+    compress_controller --> compressable
+}
+
+namespace buisness_logic {
+    interface compressable
+    compressable <|-- addressbook_compressor
+    compressable <|-- mail_compressor
+}
+
+namespace adapter {
+    mail_compress_service --> buisness_logic.mail_compressor
+    mail_compress_service --> services.compress_controller
+    mail_compress_service --> compress_adapter
+    compress_adapter --> buisness_logic.compressable
+    services.compressable <|-- compress_adapter
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:dip_05.png]]
+
+** violations
+- variable has reference to a concrete class
+- class derives from a concrete class
+- class is not testable
+
+#+BEGIN_NOTES
+Es ist immer besser von Abstraktionen abzuhängen
+Losen Kopplung
+Es sollte die passende Abstraktion sein
+Wenn Methode einer Basisklasse überschrieben wird dann passt die Abstraktion nicht
+
+100% Einhaltung unmöglich – Es sind nur Richtlinien
+#+END_NOTES
+
 * Uncle Bob
 - clean code book
 - clean code kino
