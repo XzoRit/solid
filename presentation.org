@@ -480,6 +480,41 @@ Wenn Methode einer Basisklasse überschrieben wird dann passt die Abstraktion ni
 100% Einhaltung unmöglich – Es sind nur Richtlinien
 #+END_NOTES
 
+** di - dependency injection
+#+BEGIN_SRC C++
+compress_controller()
+: addressbook_compressor()
+{}
+
+compress_controller()
+: addressbook_compressor(addressbook_compressor::instance())
+{}
+
+compress_controller()
+: addressbook_cmpressor(0)
+{
+	addressbook_compressor = new addressbook_compressor();
+}
+#+END_SRC
+
+#+BEGIN_NOTES
+Was muss man tun, damit eine Klasse unmöglich testbar ist?
+#+END_NOTES
+
+** di - dependency injection
+#+BEGIN_SRC C++
+compressable& to_be_compressed;
+
+compress_controller(compressable& compress)
+: to_be_compressed(compress)
+{}
+
+void compress_controller::compress(compressable& to_be_compressed)
+{
+	...
+}
+#+END_SRC
+
 * Uncle Bob
 - clean code book
 - clean code kino
